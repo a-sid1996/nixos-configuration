@@ -32,15 +32,17 @@
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
+    xkb = {
+      variant = "";
+      layout = "us";
+    };
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.sid = {
     isNormalUser = true;
     description = "sid";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker"];
     packages = with pkgs; [];
   };
 
@@ -66,6 +68,13 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  virtualisation.docker.enable = true;
+
+  # use docker without Root access (Rootless docker)
+  virtualisation.docker.rootless = {
+     enable = true;
+     setSocketVariable = true;
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
